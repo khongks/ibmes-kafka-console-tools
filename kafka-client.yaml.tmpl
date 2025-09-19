@@ -1,0 +1,47 @@
+apiVersion: eventstreams.ibm.com/v1beta2
+kind: KafkaUser
+metadata:
+  labels:
+    eventstreams.ibm.com/cluster: ${CLUSTER_NAME}
+    backup.eventstreams.ibm.com/component: kafkauser
+  name: kafka-client
+  namespace: ${NAMESPACE}
+spec:
+  authentication:
+    type: tls
+  authorization:
+    acls:
+      - host: '*'
+        operations:
+          - Read
+          - Write
+          - Create
+        resource:
+          name: '*'
+          patternType: literal
+          type: topic
+      - host: '*'
+        operations:
+          - Read
+          - Alter
+        resource:
+          name: __schema_
+          patternType: prefix
+          type: topic
+      - host: '*'
+        operations:
+          - Read
+        resource:
+          name: '*'
+          patternType: literal
+          type: group
+      - host: '*'
+        operations:
+          - All
+          - Describe
+          - Write
+        resource:
+          name: '*'
+          patternType: literal
+          type: transactionalId
+    type: simple
