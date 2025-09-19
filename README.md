@@ -53,7 +53,7 @@ This guide is written to provide guide on how to get started in using Apache Kaf
    1. ca.pem - CA certificate to connect to IBM Event Streams
    1. es-cert.12 - Trust Store that contains certificates needed to connect to IBM Event Streams.
 
-1. As you generate the producer and consumer properties files, it also provide the command line to user the tools
+1. As you generate the producer and consumer properties files, it also provide the command line to use   the tools
 
    1. Example, for producer
       ```
