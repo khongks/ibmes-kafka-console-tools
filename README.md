@@ -53,16 +53,48 @@ This guide is written to provide guide on how to get started in using Apache Kaf
    1. ca.pem - CA certificate to connect to IBM Event Streams
    1. es-cert.12 - Trust Store that contains certificates needed to connect to IBM Event Streams.
 
-1. As you generate the producer and consumer properties files, it also provide the command line to use   the tools
+1. As you generate the producer and consumer properties files, it also provide the command line to use the tools
 
    1. Example, for producer
       ```
       bin/kafka-console-producer.sh --producer.config producer.properties --topic TO.MQ.TOPIC --bootstrap-server es-min-prod-kafka-bootstrap-es.apps.{domain}:443
       ```
 
+      A `producer.properties` is generated in the `kafka` folder. Here is a sample of the file
+      ```
+      bootstrap.servers=es-min-prod-kafka-bootstrap-es.apps.{{DOMAIN_NAME}}:443
+      topic=TO.MQ.TOPIC
+      ssl.protocol=TLSv1.3
+      ssl.truststore.location=es-cert.p12
+      ssl.truststore.type=PKCS12
+      ssl.truststore.password={{TRUSTSTORE_PASSWORD}}
+      security.protocol=SASL_SSL
+      sasl.mechanism=SCRAM-SHA-512
+      sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username="kafka-client" password="{{KAFKAUSER_PASSWORD}}";
+      acks=1
+      batch.size=16384
+      linger.ms=5
+      retries=0
+      ```
+
    1. Example, for consumer
       ```
       bin/kafka-console-consumer.sh --consumer.config consumer.properties --topic FROM.MQ.TOPIC --bootstrap-server es-min-prod-kafka-bootstrap-es.apps.{domain}:443 --from-beginning
+      ```
+
+      A `consumer.properties` is generated in the `kafka` folder. Here is a sample of the file
+      ```
+      bootstrap.servers=es-min-prod-kafka-bootstrap-es.apps.{{DOMAIN_NAME}}:443
+      topic=TO.MQ.TOPIC
+      ssl.protocol=TLSv1.3
+      ssl.truststore.location=es-cert.p12
+      ssl.truststore.type=PKCS12
+      ssl.truststore.password={{TRUSTSTORE_PASSWORD}}
+      security.protocol=SASL_SSL
+      sasl.mechanism=SCRAM-SHA-512
+      sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username="kafka-client" password="{{KAFKAUSER_PASSWORD}}";
+      group.id=test-consumer-group
+      auto.offset.reset=earliest
       ```
 
 ## Run Kafka Tools
